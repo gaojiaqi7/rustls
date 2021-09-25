@@ -12,21 +12,26 @@ categories = ["network-programming", "cryptography"]
 autobenches = false
 
 [dependencies]
-log = { version = "0.4.4", optional = true }
-ring = "0.16.20"
-sct = "0.7.0"
-webpki = { version = "0.22.0", features = ["alloc", "std"] }
+log = { version = "0.4.4", optional = true}
+ring = { git = "https://github.com/jyao1/ring.git", branch = "uefi_support", default-features = false }
+sct = { git = "https://github.com/jyao1/sct.rs.git", branch = "uefi_support" }
+webpki = { git = "https://github.com/jyao1/webpki.git", branch = "uefi_support", default-features = false}
+uefi_std_stub = { git = "https://github.com/jyao1/rust-uefi-std-stub.git", branch="master", optional = true }
 
 [features]
-default = ["logging"]
+default = ["logging", "std"]
 logging = ["log"]
 dangerous_configuration = []
 quic = []
+alloc = ["ring/alloc", "webpki/alloc"]
+std = ["alloc", "ring/std", "webpki/std"]
+
+no_std = ["uefi_std_stub", "alloc"]
 
 [dev-dependencies]
 env_logger = "0.8.2"
 log = "0.4.4"
-webpki-roots = "0.22.0"
+webpki-roots = { git = "https://github.com/jyao1/webpki-roots.git", branch = "uefi_support" }
 criterion = "0.3.0"
 rustls-pemfile = "0.2.0"
 base64 = "0.13.0"

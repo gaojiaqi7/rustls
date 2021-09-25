@@ -206,7 +206,9 @@
 //!
 
 // Require docs for public APIs, deny unsafe code, etc.
-#![forbid(unsafe_code, unused_must_use, unstable_features)]
+#![forbid(unsafe_code, unused_must_use)]
+// If std feature enabled, forbit unstable_features
+#![cfg_attr(feature = "std", forbid(unstable_features))]
 #![deny(
     clippy::clone_on_ref_ptr,
     clippy::use_self,
@@ -237,6 +239,24 @@
 )]
 // Enable documentation for all features on docs.rs
 #![cfg_attr(docsrs, feature(doc_cfg))]
+
+// Enable no_std support, and no_std support need prelude_import feature.
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#![cfg_attr(not(feature = "std"), feature(prelude_import))]
+
+#[cfg(not(feature = "std"))]
+#[macro_use]
+extern crate uefi_std_stub as std;
+
+
+// prelude internal_std for calling Vec, String, Mutex, HashMap, etc.
+#[cfg(not(feature = "std"))]
+#[prelude_import]
+#[allow(unused_imports)]
+#[allow(unused_attributes)]
+#[macro_use]
+use std::prelude::*;
 
 // log for logging (optional).
 #[cfg(feature = "logging")]
@@ -277,7 +297,14 @@ mod bs_debug;
 mod builder;
 mod client;
 mod key;
+// Use no_std keylog instead of keylog
+#[cfg(feature = "std")]
 mod keylog;
+#[cfg(not(feature = "std"))]
+mod keylog_uefi;
+#[cfg(not(feature = "std"))]
+use keylog_uefi as keylog;
+
 mod kx;
 mod server;
 mod suites;
