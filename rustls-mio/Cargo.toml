@@ -17,7 +17,7 @@ quic = ["rustls/quic"]
 log = { version = "0.4.4", optional = true }
 rustls = { path = "../rustls" }
 rustls-pemfile = "0.2.0"
-sct = { git = "https://github.com/jyao1/sct.rs.git", branch = "uefi_support" }
+sct = { git = "https://github.com/gaojiaqi7/sct.rs.git", branch = "uefi_support" }
 
 [dev-dependencies]
 ct-logs = { git = "https://github.com/xiaoyuxlu/ct-logs.git", branch = "uefi_support" }
@@ -27,7 +27,7 @@ mio = { version = "0.7", features = ["os-poll", "tcp"] }
 regex = "1.0"
 serde = "1.0"
 serde_derive = "1.0"
-webpki-roots = { git = "https://github.com/jyao1/webpki-roots", branch = "uefi_support" }
+webpki-roots = { git = "https://github.com/gaojiaqi7/webpki-roots", branch = "uefi_support" }
 ring = { git = "https://github.com/gaojiaqi7/ring.git", branch = "uefi_support", default-features = false, features = ["alloc"] }
 
 [[example]]
